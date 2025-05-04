@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<<<<<<< HEAD
     <!-- Meta tags for character encoding and responsive layout -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -130,3 +131,24 @@
 </body>
 </html>
 
+=======
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Items for Sale</title>
+</head>
+<body>
+    <h1>Items for Sale</h1>
+    <ul>
+        {% for item in items_for_sale %}
+            <li>
+                <h2>{{ item.name }}</h2>
+                <p>Price: £{{ item.price }}</p>
+                <img src="{{url_for('static', filename=item.image) }}" alt="{{ item.name }}" width="200">
+                <br>
+                <a href ="{{ url_for('singleProductPage', itemId=loop.index0) }}">View Details</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+>>>>>>> 05649c2 (Initial commit of Jellycat shop app)

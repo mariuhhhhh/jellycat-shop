@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ item.name }}</title>
+
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
    
 </head>
@@ -70,3 +71,23 @@
 
 </body>
 </html>
+
+</head>
+<body>
+    <h1>{{ item.name }}</h1>
+    <p>Price: £{{ item.price }}</p>
+    <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.name }}" width="300">
+    <p>Product Details:</p>
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <p>{{ form.quantity.label }}</p>
+        <p>{{ form.quantity(size=5) }}</p>
+        <p>{{ form.submit() }}</p>
+    </form>
+
+    
+    <a href="{{ url_for('galleryPage') }}">Back to Gallery</a>
+</body>
+</html>
+
