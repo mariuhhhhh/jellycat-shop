@@ -1,8 +1,10 @@
 import sqlite3
+
 # Connect to the SQLite database (it will create the file if it doesn't exist)
 conn = sqlite3.connect('items_for_sale.db')
 
 # Create a cursor object to interact with the database
+
 c = conn.cursor()
 
 # create the table
@@ -11,6 +13,7 @@ c.execute('''
           id INTEGER PRIMARY KEY AUTOINCREMENT, 
           name TEXT NOT NULL,
           price TEXT NOT NULL,
+
           image TEXT NOT NULL,
           description TEXT NOT NULL,
           environmental_impact TEXT NOT NULL
@@ -73,5 +76,6 @@ for item in items_for_sale:
     except sqlite3.IntegrityError as e:
         print(f"Error: {e}")
 
+    
 conn.commit()
 conn.close()

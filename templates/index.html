@@ -145,7 +145,7 @@
                 <p>Price: £{{ item.price }}</p>
                 <img src="{{url_for('static', filename=item.image) }}" alt="{{ item.name }}" width="200">
                 <br>
-                <a href ="{{ url_for('singleProductPage', itemId=loop.index0) }}">View Details</a>
+                <a href ="{{ url_for('singleProductPage', itemId=item.id) }}">View Details</a>
             </li>
         {% endfor %}
     </ul>

@@ -6,7 +6,6 @@ from wtforms.validators import DataRequired, NumberRange, InputRequired, Regexp
 from flask_bootstrap import Bootstrap
 import sqlite3
 
-
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
 app.config['SECRET_KEY'] = "top secret password don't tell anyone this"
@@ -21,6 +20,11 @@ app.config.update(
 # Retrieve all items from the database
 def get_all_items():
     conn = sqlite3.connect('items_for_sale.db')
+
+# function to get items from the database
+def get_all_items():
+    conn = sqlite3.connect('items.db')
+
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
     c.execute('SELECT * FROM items')
@@ -224,23 +228,36 @@ items_for_sale = [
     {"name": "Jellycat Small Blossom White Bunny", "price": "19.99", "image": "white_bunny.jpg"},
 ]
 
+def get_item_by_id(item_id):
+    conn = sqlite3.connect('items.db')
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+    c.execute('SELECT * FROM items WHERE id = ?', (item_id,))
+    item = c.fetchone()
+    conn.close()
+    return item
+
 class BasketForm(FlaskForm):
     quantity = IntegerField('Quantity: ',validators = [DataRequired()])
     submit = SubmitField('Add to Basket')
 
 @app.route('/')
 def galleryPage():
+    items_for_sale = get_all_items()
     return render_template('index.html', items_for_sale=items_for_sale)
 
 @app.route('/product/<int:itemId>',methods=['GET','POST'])
 def singleProductPage(itemId):
     form = BasketForm()
+    item = get_item_by_id(itemId)
+
+    if not item:
+        return "Item not found", 404
+
     if form.validate_on_submit():
         quantity = form.quantity.data
-        item = items_for_sale[itemId]
         return render_template('AddedToBasket.html', item=item, quantity=quantity)
     else:
-        item = items_for_sale[itemId]
         return render_template('SingleTech.html', item=item, form=form)
 
 if __name__ == '__main__':
