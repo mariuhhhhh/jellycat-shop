@@ -3,6 +3,7 @@ from flask_wtf import FlaskForm
 from wtforms import IntegerField, StringField, SubmitField
 from wtforms.validators import DataRequired, NumberRange, InputRequired, Regexp
 from flask_bootstrap import Bootstrap
+from flask import jsonify
 import sqlite3
 
 app = Flask(__name__)
@@ -269,6 +270,30 @@ def singleProductPage(itemId):
 def viewBasket():
     basket = session.get('basket', [])
     return render_template('basket.html', basket=basket)
+
+@app.route('/remove_from_basket/<int:item_id>', methods=['POST'])
+def remove_from_basket(item_id):
+    # Check if the basket exists in the session
+    if 'basket' in session:
+        # Find the item in the basket
+        basket = session['basket']
+        
+        # Find and remove the item with the given ID
+        session['basket'] = [item for item in basket if item['id'] != item_id]
+        
+        # Mark the session as modified
+        session.modified = True
+        
+    # After removal, redirect to the basket page
+    return redirect(url_for('viewBasket'))
+
+@app.route ('/item-details/<int:item_id>')
+def item_details(item_id):
+    item = get_item_by_id(item_id)
+    if item and hasattr(item, 'description'):
+        return {'description': item.description}
+    return {'error': 'Item not found'}, 404
+
 
 if __name__ == '__main__':
     app.run(debug=True)

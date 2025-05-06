@@ -134,24 +134,74 @@
 =======
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Items for Sale</title>
+    <title>Jellycat Store</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
+
 <body>
-    <h1>Items for Sale</h1>
-    <ul>
+    <!-- Header Section -->
+    <header class="header">
+        <h1>Welcome to Jellycat Store</h1>
+        <p>Find the cutest stuffed animals!</p>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <ul>
+            <li><a class="active" href="{{ url_for('galleryPage') }}">Home</a></li>  <!-- Home Page -->
+            <li><a href="{{ url_for('viewBasket') }}">View Basket</a></li> <!-- Shopping Basket -->
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact</a></li>
+
+            <form class="search-form">
+                <input type="text" placeholder="Search...">
+                <button type="submit">Go</button>
+            </form>
+            
+        </ul>
+    </nav>
+
+    <h1>Items for sale</h1>
+    <div class="items-container">
         {% for item in items_for_sale %}
-            <li>
+            <div class="item-card" data-id="{{ item.id }}">
+                <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.name }}">
                 <h2>{{ item.name }}</h2>
                 <p>Price: £{{ item.price }}</p>
-                <img src="{{url_for('static', filename=item.image) }}" alt="{{ item.name }}" width="200">
-                <br>
-                <a href ="{{ url_for('singleProductPage', itemId=item.id) }}">View Details</a>
-            </li>
+                <a href="{{ url_for('singleProductPage', itemId=item.id) }}" class="button">View Details</a>
+            </div>
         {% endfor %}
+    </div>
 
-        <a href="{{ url_for('viewBasket') }}">View Basket</a>
+    <div id="description-box" class="description-box" style="display: none;"></div>
 
-    </ul>
+    <script>
+        document.querySelectorAll('.item-card').forEach(card => {
+            card.addEventListener('mouseenter', async (e) => {
+                const id = card.getAttribute('data-id');
+                const box = document.getElementById('description-box');
+                try {
+                    const response = await fetch(`/item-details/${id}`);
+                    const data = await response.json();
+                    if (data.description) {
+                        box.textContent = data.description;
+                        box.style.display = 'block';
+                        const rect = card.getBoundingClientRect();
+                        box.style.top = `${rect.top + window.scrollY - 10}px`;
+                        box.style.left = `${rect.right + 10}px`;
+                    }
+                } catch (err) {
+                    box.style.display = 'none';
+                }
+            });
+        
+            card.addEventListener('mouseleave', () => {
+                const box = document.getElementById('description-box');
+                box.style.display = 'none';
+            });
+        });
+        </script>
+
 </body>
 </html>
 >>>>>>> 05649c2 (Initial commit of Jellycat shop app)
