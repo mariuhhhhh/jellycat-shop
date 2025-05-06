@@ -1,20 +1,62 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Basket</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Your Basket</h1>
-    {% if basket %}
-        <ul>
-        {% for item in basket %}
-            <li>{{ item.quantity }} x {{ item.name }}</li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>Your basket is empty.</p>
-    {% endif %}
+    <!-- Header Section -->
+    <header class="header">
+        <h1>Welcome to Jellycat Store</h1>
+        <p>Find the cutest stuffed animals!</p>
+    </header>
 
-    <a href="{{ url_for('galleryPage') }}">Back to Shop</a>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <ul>
+            <li><a href="{{ url_for('galleryPage') }}">Home</a></li>  <!-- Home Page -->
+            <li><a class="active"href="{{ url_for('viewBasket') }}">View Basket</a></li> <!-- Shopping Basket -->
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="basket">
+        <h1>Your Shopping Basket</h1>
+
+        {% if basket and basket|length > 0 %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in basket %}
+                        <tr>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>
+                                <!-- Remove Button -->
+                                <form action="{{ url_for('remove_from_basket', item_id=item.id) }}" method="POST">
+                                    <button type="submit" class="button">Remove</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Your basket is currently empty.</p>
+        {% endif %}
+
+        <div style="margin-top: 20px;">
+            <a href="{{ url_for('galleryPage') }}" class="button">Back to Gallery</a>
+        </div>
+    </div>
 </body>
 </html>

@@ -1,0 +1,227 @@
+/* Banner Styling */
+header {
+    background-color: #f8c8dc;
+    color: #333;
+    text-align: center;
+    padding: 20px;
+    font-family: 'Georgia', sans-serif;
+    font-size: 10;
+    border-bottom: 8px solid #e295b5;
+}
+
+/* General Body Styling */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #fffafc;
+    margin: 0;
+    padding: 0;
+}
+
+/* Positioning for basket icon in top-right corner */
+.basket-icon {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f08cba;
+    border-radius: 50%;
+    text-decoration: none;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+    font-size: 20px; /* Size for emoji or icon */
+    z-index: 1000;
+}
+
+.basket-icon:hover {
+    background-color: #d36c9e;
+}
+
+/* Item Grid Layout */
+.items-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    padding: 20px;
+}
+
+.item-card {
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    background-color: #ffffff;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.item-card img {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    border-radius: 8px;
+}
+
+.item-card h2 {
+    font-size: 1.1em;
+    color: #333;
+}
+
+.item-card p {
+    font-size: 1em;
+    margin: 5px 0;
+}
+
+a.button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #f08cba;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+a.button:hover {
+    background-color: #d36c9e;
+}
+
+.product-detail {
+    display: flex;
+    gap: 40px;
+    padding: 40px;
+    background: white;
+    max-width: 900px;
+    margin: 40px auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.product-detail img {
+    max-width: 300px;
+    border-radius: 10px;
+}
+
+.product-info {
+    flex: 1;
+}
+
+form {
+    margin-top: 20px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+form input {
+    padding: 8px;
+    font-size: 16px;
+    width: 80px;
+    margin-bottom: 10px;
+}
+
+.basket {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.basket table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.basket th, .basket td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.basket th {
+    background-color: #f4f4f4;
+}
+
+.basket p {
+    font-size: 1.1em;
+}
+
+.basket button {
+    padding: 8px 16px;
+    font-size: 14px;
+    background-color: #ff6f61;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.basket button:hover {
+    background-color: #e55b4e;
+}
+
+/* Styling for Navigation Bar */
+.navbar {
+    background-color: #e295b5;
+    padding: 15px;
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+}
+
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.navbar li {
+    margin-right: 20px;
+}
+
+.navbar a {
+    color: #333;
+    float: left;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+.navbar a:hover {
+    color: #f08cba;
+}
+
+.navbar a.active {
+    background-color:#d36c9e ;
+    color: white;
+}
+
+.search-form input[type="text"], 
+.search-form button {
+    height: 40px;
+    padding: 0 10px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+.description-box {
+    position: absolute;
+    background-color: #fff8fb;
+    color: #333;
+    padding: 15px;
+    max-width: 250px;
+    border: 1px solid #ddd;
+    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    z-index: 1000;
+    font-size: 0.95em;
+}

@@ -4,21 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ item.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+   
 </head>
 <body>
-    <h1>{{ item.name }}</h1>
-    <p>Price: £{{ item.price }}</p>
-    <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.name }}" width="300">
-    <p>Product Details:</p>
+    <header>
+        <div class="header-title">
+            Jellycat Store
+        </div>
+        <div class="basket-icon">
+            <a href="{{ url_for('viewBasket') }}">
+                <img src="{{ url_for('static', filename='basket.png') }}" alt="Basket" style="width: 24px; height: 24px;">
+            </a>
+        </div>
+        
 
-    <form method="POST">
-        {{ form.hidden_tag() }}
-        <p>{{ form.quantity.label }}</p>
-        <p>{{ form.quantity(size=5) }}</p>
-        <p>{{ form.submit() }}</p>
-    </form>
+    </header>
 
-    
-    <a href="{{ url_for('galleryPage') }}">Back to Gallery</a>
+    <div class="product-detail">
+        <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.name }}">
+        <div class="product-info">
+            <h1>{{ item.name }}</h1>
+            <p><strong>Price:</strong> £{{ item.price }}</p>
+            <p>Product Details: Cute and cuddly Jellycat bunny!</p>
+
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <label for="quantity">{{ form.quantity.label }}</label>
+                {{ form.quantity(size=5) }}
+                {{ form.submit(class_="button") }}
+            </form>
+
+            <a href="{{ url_for('galleryPage') }}" class="button">Back to Gallery</a>
+        </div>
+    </div>
+
 </body>
 </html>
