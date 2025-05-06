@@ -17,6 +17,9 @@
                 <a href ="{{ url_for('singleProductPage', itemId=item.id) }}">View Details</a>
             </li>
         {% endfor %}
+
+        <a href="{{ url_for('viewBasket') }}">View Basket</a>
+
     </ul>
 </body>
 </html>

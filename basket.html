@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Basket</title>
+</head>
+<body>
+    <h1>Your Basket</h1>
+    {% if basket %}
+        <ul>
+        {% for item in basket %}
+            <li>{{ item.quantity }} x {{ item.name }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Your basket is empty.</p>
+    {% endif %}
+
+    <a href="{{ url_for('galleryPage') }}">Back to Shop</a>
+</body>
+</html>

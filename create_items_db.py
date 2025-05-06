@@ -1,7 +1,7 @@
 import sqlite3
 
 # connect to a SQLite database (or create it)
-conn = sqlite3.connect('items.db')
+conn = sqlite3.connect('items_for_sale.db')
 c = conn.cursor()
 
 # create the table
