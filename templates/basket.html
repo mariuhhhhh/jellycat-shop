@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Basket</title>
@@ -95,5 +96,21 @@
             <a href="{{ url_for('galleryPage') }}" class="button">Back</a>
         </div>
     </div>
-</body>
+
+    <title>Your Basket</title>
+</head>
+<body>
+    <h1>Your Basket</h1>
+    {% if basket %}
+        <ul>
+        {% for item in basket %}
+            <li>{{ item.quantity }} x {{ item.name }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Your basket is empty.</p>
+    {% endif %}
+
+    <a href="{{ url_for('galleryPage') }}">Back to Shop</a>
+
 </html>

@@ -1,10 +1,8 @@
 import sqlite3
 
-# Connect to the SQLite database (it will create the file if it doesn't exist)
+
+# connect to a SQLite database (or create it)
 conn = sqlite3.connect('items_for_sale.db')
-
-# Create a cursor object to interact with the database
-
 c = conn.cursor()
 
 # create the table

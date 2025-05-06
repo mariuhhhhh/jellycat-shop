@@ -1,5 +1,4 @@
-
-from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session
 from flask_wtf import FlaskForm
 from wtforms import IntegerField, StringField, SubmitField
 from wtforms.validators import DataRequired, NumberRange, InputRequired, Regexp
@@ -23,8 +22,8 @@ def get_all_items():
 
 # function to get items from the database
 def get_all_items():
-    conn = sqlite3.connect('items.db')
 
+    conn = sqlite3.connect('items_for_sale.db')
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
     c.execute('SELECT * FROM items')
@@ -229,7 +228,7 @@ items_for_sale = [
 ]
 
 def get_item_by_id(item_id):
-    conn = sqlite3.connect('items.db')
+    conn = sqlite3.connect('items_for_sale.db')
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
     c.execute('SELECT * FROM items WHERE id = ?', (item_id,))
@@ -251,14 +250,25 @@ def singleProductPage(itemId):
     form = BasketForm()
     item = get_item_by_id(itemId)
 
-    if not item:
-        return "Item not found", 404
-
     if form.validate_on_submit():
         quantity = form.quantity.data
-        return render_template('AddedToBasket.html', item=item, quantity=quantity)
-    else:
-        return render_template('SingleTech.html', item=item, form=form)
+
+        # Initialize basket if it doesn't exist
+        if 'basket' not in session:
+            session['basket'] = []
+
+        # Add item to basket
+        session['basket'].append({'id': itemId, 'name': item['name'], 'quantity': quantity})
+        session.modified = True
+
+        return redirect(url_for('viewBasket'))
+
+    return render_template('SingleTech.html', item=item, form=form)
+
+@app.route('/basket')
+def viewBasket():
+    basket = session.get('basket', [])
+    return render_template('basket.html', basket=basket)
 
 if __name__ == '__main__':
     app.run(debug=True)
