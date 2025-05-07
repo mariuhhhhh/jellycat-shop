@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <!-- Meta tags for character encoding and responsive layout -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -132,9 +133,14 @@
 </html>
 
 =======
+=======
+    <!-- Meta tags for character encoding and responsive layout -->
+>>>>>>> 03a8ed0 (adding comments)
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jellycat Store</title>
+
+    <!-- Link to external CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 
@@ -148,60 +154,107 @@
     <!-- Navigation Bar -->
     <nav class="navbar">
         <ul>
-            <li><a class="active" href="{{ url_for('galleryPage') }}">Home</a></li>  <!-- Home Page -->
-            <li><a href="{{ url_for('viewBasket') }}">View Basket</a></li> <!-- Shopping Basket -->
+            <!-- Link to homepage -->
+            <li><a class="active" href="{{ url_for('galleryPage') }}">Home</a></li>
+
+            <!-- Link to shopping basket page -->
+            <li><a href="{{ url_for('viewBasket') }}">View Basket</a></li>
+
+            <!-- Static placeholder links -->
             <li><a href="#">About Us</a></li>
             <li><a href="#">Contact</a></li>
 
+            <!-- Basic search form (non-functional placeholder) -->
             <form class="search-form">
                 <input type="text" placeholder="Search...">
                 <button type="submit">Go</button>
             </form>
-            
         </ul>
     </nav>
 
+<<<<<<< HEAD
     <h1>Items for sale</h1>
+=======
+    <!-- Section title -->
+    <h1 style="text-align: center;">Items for sale</h1>
+
+    <!-- Dropdown form to sort items -->
+    <form method="GET" action="{{ url_for('galleryPage') }}" class="sort-form">
+        <label for="sort">Sort by:</label>
+        <select name="sort" id="sort" onchange="this.form.submit()">
+            <option value="name" {% if request.args.get('sort') == 'name' %}selected{% endif %}>Name</option>
+            <option value="price" {% if request.args.get('sort') == 'price' %}selected{% endif %}>Price</option>
+            <option value="carbon" {% if request.args.get('sort') == 'carbon' %}selected{% endif %}>Carbon Footprint</option>
+        </select>
+    </form>
+
+    <!-- Container for all item cards -->
+>>>>>>> 03a8ed0 (adding comments)
     <div class="items-container">
         {% for item in items_for_sale %}
             <div class="item-card" data-id="{{ item.id }}">
+                <!-- Item image and basic info -->
                 <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.name }}">
                 <h2>{{ item.name }}</h2>
                 <p>Price: £{{ item.price }}</p>
+<<<<<<< HEAD
+=======
+
+                <!-- Form to add item to basket -->
+                <form action="{{ url_for('add_to_basket', item_id=item.id) }}" method="POST" class="add-to-basket-form">
+                    <button type="submit" class="button">Add to Basket</button>
+                </form>
+
+                <!-- Link to single product detail page -->
+>>>>>>> 03a8ed0 (adding comments)
                 <a href="{{ url_for('singleProductPage', itemId=item.id) }}" class="button">View Details</a>
             </div>
         {% endfor %}
     </div>
 
+    <!-- Hidden description box that appears on hover -->
     <div id="description-box" class="description-box" style="display: none;"></div>
 
+    <!-- JavaScript for showing item descriptions on hover -->
     <script>
         document.querySelectorAll('.item-card').forEach(card => {
             card.addEventListener('mouseenter', async (e) => {
                 const id = card.getAttribute('data-id');
                 const box = document.getElementById('description-box');
                 try {
+                    // Fetch description from server
                     const response = await fetch(`/item-details/${id}`);
                     const data = await response.json();
                     if (data.description) {
+<<<<<<< HEAD
                         box.textContent = data.description;
+=======
+                        // Display the description in the box near the item
+                        box.innerHTML = data.description;
+>>>>>>> 03a8ed0 (adding comments)
                         box.style.display = 'block';
                         const rect = card.getBoundingClientRect();
                         box.style.top = `${rect.top + window.scrollY - 10}px`;
                         box.style.left = `${rect.right + 10}px`;
                     }
                 } catch (err) {
+                    // Hide box on error
                     box.style.display = 'none';
                 }
             });
-        
+
+            // Hide description when mouse leaves the item
             card.addEventListener('mouseleave', () => {
                 const box = document.getElementById('description-box');
                 box.style.display = 'none';
             });
         });
-        </script>
+    </script>
 
 </body>
 </html>
+<<<<<<< HEAD
 >>>>>>> 05649c2 (Initial commit of Jellycat shop app)
+=======
+
+>>>>>>> 03a8ed0 (adding comments)
