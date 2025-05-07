@@ -345,3 +345,53 @@ form input[type="submit"]:hover {
     }
 }
 
+/* STyling the reviews page */
+.reviews-section {
+    margin-top: 40px;
+    background-color: #fff0f6;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.reviews-section h2,
+.reviews-section h3 {
+    color: #f08cba;
+}
+
+.reviews-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.reviews-list li {
+    background: #ffffff;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-left: 4px solid #f08cba;
+    border-radius: 5px;
+    box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.05);
+}
+
+.review-form .input-field {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.review-form button {
+    background-color: #f08cba;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.review-form button:hover {
+    background-color: #d36c9e;
+}
+

@@ -59,10 +59,13 @@ def galleryPage():
 
     return render_template('index.html', items_for_sale=items_for_sale)
 
+reviews_db = {}
+
 @app.route('/product/<int:itemId>',methods=['GET','POST'])
 def singleProductPage(itemId):
     form = BasketForm()
     item = get_item_by_id(itemId)
+    reviews = reviews_db.get(itemId, [])  # Get reviews for this item
 
     if form.validate_on_submit():
         quantity = form.quantity.data
@@ -82,7 +85,21 @@ def singleProductPage(itemId):
 
         return redirect(url_for('viewBasket'))
 
-    return render_template('SingleTech.html', item=item, form=form)
+    return render_template('SingleTech.html', item=item, form=form, reviews=reviews)
+
+@app.route('/item/<int:item_id>/review', methods=['POST'])
+def submit_review(item_id):
+    author = request.form.get('author')
+    content = request.form.get('content')
+
+    if not author or not content:
+        flash("All fields are required!")
+        return redirect(url_for('singleProductPage', item_id=item_id))
+
+    new_review = {'author': author, 'content': content}
+    reviews_db.setdefault(item_id, []).append(new_review)
+
+    return redirect(url_for('singleProductPage', item_id=item_id))
 
 @app.route('/add_to_basket/<int:item_id>', methods=['POST'])
 def add_to_basket(item_id):

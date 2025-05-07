@@ -41,6 +41,31 @@
         </div>
     </div>
 
+    <div class="reviews-section">
+        <h2>Customer Reviews</h2>
+    
+        <!-- Display existing reviews -->
+        {% if reviews %}
+            <ul class="reviews-list">
+                {% for review in reviews %}
+                    <li>
+                        <strong>{{ review['author'] }}</strong>:
+                        <em>{{ review['content'] }}</em>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No reviews yet. Be the first to leave one!</p>
+        {% endif %}
+    
+        <!-- Review Form -->
+        <h3>Leave a Review</h3>
+        <form action="{{ url_for('submit_review', item_id=item['id']) }}" method="POST" class="review-form">
+            <input type="text" name="author" placeholder="Your name" required class="input-field">
+            <textarea name="content" placeholder="Write your review here..." required class="input-field" rows="4"></textarea>
+            <button type="submit">Submit Review</button>
+        </form>
+    </div>
     
 
 </body>
