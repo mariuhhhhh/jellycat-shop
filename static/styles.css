@@ -269,7 +269,6 @@ form input {
     outline: none;
 }
 
-/* Input Fields */
 .input-field {
     width: 100%;
     max-width: 400px;
@@ -380,3 +379,4 @@ form input {
     100% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
 
 }
+
