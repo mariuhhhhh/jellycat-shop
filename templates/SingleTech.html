@@ -26,7 +26,9 @@
         <div class="product-info">
             <h1>{{ item.name }}</h1>
             <p><strong>Price:</strong> £{{ item.price }}</p>
-            <p>Product Details: Cute and cuddly Jellycat bunny!</p>
+            <p><strong>Environmental Impact:</strong> {{ item.environmental_impact }}</p>
+            <p>{{ item.description | safe }}</p>
+
 
             <form method="POST">
                 {{ form.hidden_tag() }}
@@ -38,6 +40,8 @@
             <a href="{{ url_for('galleryPage') }}" class="button">Back to Gallery</a>
         </div>
     </div>
+
+    
 
 </body>
 </html>

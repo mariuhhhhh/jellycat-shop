@@ -14,6 +14,7 @@
         <p>Find the cutest stuffed animals!</p>
     </header>
 
+
     <!-- Navigation Bar -->
     <nav class="navbar">
         <ul>
@@ -30,13 +31,30 @@
         </ul>
     </nav>
 
-    <h1>Items for sale</h1>
+    <h1 style="text-align: center;">Items for sale</h1>
+
+    <form method="GET" action="{{ url_for('galleryPage') }}" class="sort-form">
+        <label for="sort">Sort by:</label>
+        <select name="sort" id="sort" onchange="this.form.submit()">
+            <option value="name" {% if request.args.get('sort') == 'name' %}selected{% endif %}>Name</option>
+            <option value="price" {% if request.args.get('sort') == 'price' %}selected{% endif %}>Price</option>
+            <option value="carbon" {% if request.args.get('sort') == 'carbon' %}selected{% endif %}>Carbon Footprint</option>
+        </select>
+    </form>
+    
+    
     <div class="items-container">
         {% for item in items_for_sale %}
             <div class="item-card" data-id="{{ item.id }}">
                 <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.name }}">
                 <h2>{{ item.name }}</h2>
                 <p>Price: £{{ item.price }}</p>
+
+                <!-- Add to Basket Form -->
+                <form action="{{ url_for('add_to_basket', item_id=item.id) }}" method="POST" class="add-to-basket-form">
+                    <button type="submit" class="button">Add to Basket</button>
+                </form>
+
                 <a href="{{ url_for('singleProductPage', itemId=item.id) }}" class="button">View Details</a>
             </div>
         {% endfor %}
@@ -53,7 +71,7 @@
                     const response = await fetch(`/item-details/${id}`);
                     const data = await response.json();
                     if (data.description) {
-                        box.textContent = data.description;
+                        box.innerHTML = data.description;
                         box.style.display = 'block';
                         const rect = card.getBoundingClientRect();
                         box.style.top = `${rect.top + window.scrollY - 10}px`;

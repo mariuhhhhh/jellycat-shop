@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_wtf import FlaskForm
 from wtforms import IntegerField, SubmitField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, NumberRange
 from flask_bootstrap import Bootstrap
 from flask import jsonify
 import sqlite3
@@ -9,6 +9,13 @@ import sqlite3
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
 app.config['SECRET_KEY'] = "top secret password don't tell anyone this"
+
+# Secure session cookie configuration
+app.config.update(
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE='Lax',  # Use 'Strict' if you want more isolation
+    SESSION_COOKIE_SECURE=False  # Set to True if using HTTPS
+)
 
 # function to get items from the database
 def get_all_items():
@@ -30,12 +37,23 @@ def get_item_by_id(item_id):
     return item
 
 class BasketForm(FlaskForm):
-    quantity = IntegerField('Quantity: ',validators = [DataRequired()])
+    quantity = IntegerField('Quantity: ',validators = [DataRequired(), NumberRange(min=1)])
     submit = SubmitField('Add to Basket')
 
 @app.route('/')
 def galleryPage():
+    sort_by = request.args.get('sort', default='name')
+
     items_for_sale = get_all_items()
+
+    if sort_by == 'price':
+        items_for_sale.sort(key=lambda item: item['price'])
+    elif sort_by == 'carbon':
+       
+        items_for_sale.sort(key=lambda item: float(item['environmental_impact'].split()[0]))
+    else:  
+        items_for_sale.sort(key=lambda item: item['name'].lower())
+
     return render_template('index.html', items_for_sale=items_for_sale)
 
 @app.route('/product/<int:itemId>',methods=['GET','POST'])
@@ -51,17 +69,51 @@ def singleProductPage(itemId):
             session['basket'] = []
 
         # Add item to basket
-        session['basket'].append({'id': itemId, 'name': item['name'], 'quantity': quantity})
+        session['basket'].append({
+            'id': itemId,
+            'name': item['name'],
+            'price': float(item['price']),
+            'quantity': quantity
+        })
         session.modified = True
 
         return redirect(url_for('viewBasket'))
 
     return render_template('SingleTech.html', item=item, form=form)
 
+@app.route('/add_to_basket/<int:item_id>', methods=['POST'])
+def add_to_basket(item_id):
+    item = get_item_by_id(item_id)
+
+    # Initialize basket if it doesn't exist
+    if 'basket' not in session:
+        session['basket'] = []
+
+    # Check if item already in basket
+    existing_item = next((i for i in session['basket'] if i['id'] == item_id), None)
+    
+    if existing_item:
+        existing_item['quantity'] += 1  # Increment quantity if item is already in basket
+    else:
+        session['basket'].append({
+            'id': item_id,
+            'name': item['name'],
+            'price': float(item['price']),
+            'quantity': 1
+        })
+
+    session.modified = True
+    return redirect(url_for('galleryPage'))
+
 @app.route('/basket')
 def viewBasket():
     basket = session.get('basket', [])
-    return render_template('basket.html', basket=basket)
+    
+    total_price = 0
+    total_price = round(sum(item['price'] * item['quantity'] for item in basket), 2)
+
+
+    return render_template('basket.html', basket=basket, total_price=total_price)
 
 @app.route('/remove_from_basket/<int:item_id>', methods=['POST'])
 def remove_from_basket(item_id):
@@ -82,9 +134,17 @@ def remove_from_basket(item_id):
 @app.route ('/item-details/<int:item_id>')
 def item_details(item_id):
     item = get_item_by_id(item_id)
-    if item and hasattr(item, 'description'):
-        return {'description': item.description}
-    return {'error': 'Item not found'}, 404
+    print(f"fetched item: {item}")
+
+    if item:
+        item_dict = dict(item)
+        print(f"Converted to dict: {item_dict}")  
+        description = item_dict.get('description')
+        if description:
+            return jsonify({'description': description})
+
+    return jsonify({'error': 'Item not found'}), 404
+
 
 
 if __name__ == '__main__':

@@ -32,6 +32,7 @@
                     <tr>
                         <th>Item</th>
                         <th>Quantity</th>
+                        <th>Price</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -39,7 +40,15 @@
                     {% for item in basket %}
                         <tr>
                             <td>{{ item.name }}</td>
+                            <td>£{{ "%.2f"|format(item.price) }}</td>
                             <td>{{ item.quantity }}</td>
+                            <td>
+                                {% if item.price %}
+                                    £{{ item.price * item.quantity }}
+                                {% else %}
+                                    Price not available
+                                {% endif %}
+                            </td>
                             <td>
                                 <!-- Remove Button -->
                                 <form action="{{ url_for('remove_from_basket', item_id=item.id) }}" method="POST">
@@ -50,6 +59,12 @@
                     {% endfor %}
                 </tbody>
             </table>
+
+            <div class="total-price">
+                <h3>Total: £{{ "%.2f"|format(total_price) }}</h3>
+
+            </div>
+
         {% else %}
             <p>Your basket is currently empty.</p>
         {% endif %}

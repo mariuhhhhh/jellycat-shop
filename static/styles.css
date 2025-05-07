@@ -42,9 +42,10 @@ body {
 
 /* Item Grid Layout */
 .items-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
+    display: flex;
+    flex-wrap: wrap;   /* Allow items to wrap onto the next line if necessary */
+    gap: 20px;         /* Add space between items */
+    justify-content: center; /* Center items horizontally */
     padding: 20px;
 }
 
@@ -222,6 +223,36 @@ form input {
     border: 1px solid #ddd;
     box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.15);
     border-radius: 8px;
-    z-index: 1000;
     font-size: 0.95em;
+    display: none;  /* Initially hidden */
+    z-index: 1000;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+.sort-form {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 16px;
+}
+
+.sort-form label {
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.sort-form select {
+    padding: 8px 12px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff0f6;
+    color: #333;
+    transition: border-color 0.3s;
+}
+
+.sort-form select:hover,
+.sort-form select:focus {
+    border-color: #f08cba;
+    outline: none;
 }
