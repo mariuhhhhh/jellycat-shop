@@ -256,3 +256,13 @@ form input {
     border-color: #f08cba;
     outline: none;
 }
+
+.input-field {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}

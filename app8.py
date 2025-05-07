@@ -2,6 +2,9 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from flask_wtf import FlaskForm
 from wtforms import IntegerField, SubmitField
 from wtforms.validators import DataRequired, NumberRange
+from wtforms import StringField, SubmitField
+from wtforms.validators import InputRequired, Regexp
+from flask import render_template, session, redirect, url_for, flash
 from flask_bootstrap import Bootstrap
 from flask import jsonify
 import sqlite3
@@ -145,6 +148,40 @@ def item_details(item_id):
 
     return jsonify({'error': 'Item not found'}), 404
 
+class CheckoutForm(FlaskForm):
+    name = StringField('Name on Card', validators=[InputRequired()])
+    
+    card_number = StringField('Credit Card Number', validators=[
+        InputRequired(),
+        Regexp(r'^\s*\d{4}[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4}\s*$', message="Must be a valid 16-digit card number")
+    ])
+    
+    expiry = StringField('Expiry Date (MM/YY)', validators=[
+        InputRequired(),
+        Regexp(r'^(0[1-9]|1[0-2])\/\d{2}$', message="Enter a valid expiry date (MM/YY)")
+    ])
+    
+    cvv = StringField('CVV', validators=[
+        InputRequired(),
+        Regexp(r'^\d{3}$', message="Enter a valid 3-digit CVV")
+    ])
+
+    submit = SubmitField('Pay Now')
+
+@app.route('/checkout', methods=['GET', 'POST'])
+def checkout():
+    form = CheckoutForm()
+    
+    # Assume basket and total are calculated from session
+    basket = session.get('basket', [])
+    total_price = round(sum(item['price'] * item['quantity'] for item in basket), 2)
+
+    if form.validate_on_submit():
+        # Flash confirmation (or redirect to confirmation page)
+        flash("Payment successful! This is a simulated checkout.")
+        return render_template('confirmation.html', total_price=total_price)
+
+    return render_template('checkout.html', form=form, total_price=total_price)
 
 
 if __name__ == '__main__':

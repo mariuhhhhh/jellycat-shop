@@ -63,6 +63,9 @@
             <div class="total-price">
                 <h3>Total: £{{ "%.2f"|format(total_price) }}</h3>
 
+                <a href="{{ url_for('checkout') }}" class="button">Proceed to Checkout</a>
+
+
             </div>
 
         {% else %}
