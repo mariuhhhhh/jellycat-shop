@@ -33,8 +33,10 @@ def get_item_by_id(item_id):
     conn = sqlite3.connect('items_for_sale.db')
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
+
     
-    c.execute('SELECT DISTINCT * FROM items')
+    c.execute('SELECT * FROM items WHERE id = ?', (item_id,))
+
 
 
     item = c.fetchone()
@@ -67,11 +69,11 @@ def galleryPage():
 reviews_db = {}
 
 # Single product view with form and review handling
-@app.route('/product/<int:itemId>', methods=['GET', 'POST'])
-def singleProductPage(itemId):
+@app.route('/product/<int:item_id>', methods=['GET', 'POST'])
+def singleProductPage(item_id):
     form = BasketForm()
-    item = get_item_by_id(itemId)
-    reviews = reviews_db.get(itemId, [])
+    item = get_item_by_id(item_id)
+    reviews = reviews_db.get(item_id, [])
 
     if form.validate_on_submit():
         quantity = form.quantity.data
@@ -82,7 +84,7 @@ def singleProductPage(itemId):
 
         # Add item to basket
         session['basket'].append({
-            'id': itemId,
+            'id': item_id,
             'name': item['name'],
             'price': float(item['price']),
             'quantity': quantity
@@ -111,6 +113,7 @@ def submit_review(item_id):
 # Route to add an item to the basket (1 quantity by default)
 @app.route('/add_to_basket/<int:item_id>', methods=['POST'])
 def add_to_basket(item_id):
+    basket = session.get('basket', [])
     item = get_item_by_id(item_id)
 
     if 'basket' not in session:
@@ -128,6 +131,7 @@ def add_to_basket(item_id):
             'quantity': 1
         })
 
+    session['basket'] = basket
     session.modified = True
     flash("Added to basket!")
 
