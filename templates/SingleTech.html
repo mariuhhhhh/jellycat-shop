@@ -1,51 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ item.name }}</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-   
 </head>
 <body>
-    <header>
+
+    <!-- Header -->
+    <header class="header">
         <div class="header-title">
             Jellycat Store
         </div>
         <div class="basket-icon">
             <a href="{{ url_for('viewBasket') }}">
-                <img src="{{ url_for('static', filename='basket.png') }}" alt="Basket" style="width: 24px; height: 24px;">
+                <img src="{{ url_for('static', filename='basket.png') }}" alt="Basket Icon" width="24" height="24">
             </a>
         </div>
-        
-
     </header>
 
+    <!-- Product Details -->
     <div class="product-detail">
-        <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.name }}">
+        <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.name }} image">
         <div class="product-info">
             <h1>{{ item.name }}</h1>
             <p><strong>Price:</strong> £{{ item.price }}</p>
             <p><strong>Environmental Impact:</strong> {{ item.environmental_impact }}</p>
             <p>{{ item.description | safe }}</p>
 
-
-            <form method="POST">
+            <form method="POST" action="{{ url_for('singleProductPage', itemId=item.id) }}">
                 {{ form.hidden_tag() }}
-                <label for="quantity">{{ form.quantity.label }}</label>
-                {{ form.quantity(size=5) }}
-                {{ form.submit(class_="button") }}
+                <div>
+                    <label for="quantity">{{ form.quantity.label }}</label>
+                    {{ form.quantity(class_='input-field') }}
+                </div>
+                {{ form.submit(class_='button') }}
             </form>
 
             <a href="{{ url_for('galleryPage') }}" class="button">Back to Gallery</a>
         </div>
     </div>
 
+    <!-- Reviews -->
     <div class="reviews-section">
         <h2>Customer Reviews</h2>
-    
-        <!-- Display existing reviews -->
+
         {% if reviews %}
             <ul class="reviews-list">
                 {% for review in reviews %}
@@ -58,19 +59,15 @@
         {% else %}
             <p>No reviews yet. Be the first to leave one!</p>
         {% endif %}
-    
+
         <!-- Review Form -->
         <h3>Leave a Review</h3>
-        <form action="{{ url_for('submit_review', item_id=item['id']) }}" method="POST" class="review-form">
+        <form action="{{ url_for('submit_review', item_id=item.id) }}" method="POST" class="review-form">
             <input type="text" name="author" placeholder="Your name" required class="input-field">
             <textarea name="content" placeholder="Write your review here..." required class="input-field" rows="4"></textarea>
-            <button type="submit">Submit Review</button>
+            <button type="submit" class="button">Submit Review</button>
         </form>
     </div>
-    
 
 </body>
 </html>
-
-   
-
