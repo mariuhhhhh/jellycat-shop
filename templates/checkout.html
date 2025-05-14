@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Checkout</h1>
+
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                <label for="name">{{ form.name.label }}</label>
+                {{ form.name(class="form-control", id="name") }}
+                {% for error in form.name.errors %}
+                    <p class="error">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                <label for="card_number">{{ form.card_number.label }}</label>
+                {{ form.card_number(class="form-control", id="card_number") }}
+                {% for error in form.card_number.errors %}
+                    <p class="error">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                <label for="expiry">{{ form.expiry.label }}</label>
+                {{ form.expiry(class="form-control", id="expiry") }}
+                {% for error in form.expiry.errors %}
+                    <p class="error">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                <label for="cvv">{{ form.cvv.label }}</label>
+                {{ form.cvv(class="form-control", id="cvv") }}
+                {% for error in form.cvv.errors %}
+                    <p class="error">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                <p>Total Price: ${{ total_price }}</p>
+            </div>
+
+            <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
+        </form>
+
+    </div>
+</body>
+</html>

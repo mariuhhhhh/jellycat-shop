@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Basket</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <h1>Fuzzy Friends</h1>
+        <p>Find the cutest stuffed animals!</p>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <ul>
+            <li><a href="{{ url_for('galleryPage') }}">Home</a></li>  <!-- Home Page -->
+            <li><a class="active"href="{{ url_for('viewBasket') }}">View Basket</a></li> <!-- Shopping Basket -->
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="basket">
+        <h1>Your Shopping Basket</h1>
+
+        {% if basket and basket|length > 0 %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                        <th>Total Price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in basket %}
+                        <tr>
+                            <td>{{ item.name }}</td>
+
+                            <td>
+                                <form action="{{ url_for('update_quantity', item_id=item.id) }}" method="POST" style="display:inline-flex; gap: 5px;">
+                                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1" style="width: 50px; padding: 5px;" onchange="this.form.submit()">
+                                </form>
+                            </td>
+                            
+
+                            <td>£{{ "%.2f"|format(item.price) }}</td>
+
+
+                            <td>{{ item.quantity }}</td>
+                            <td>
+                                {% if item.price %}
+                                    £{{ item.price * item.quantity }}
+                                {% else %}
+                                    Price not available
+                                {% endif %}
+                            </td>
+                            <td>
+                                <!-- Remove Button -->
+                                <form action="{{ url_for('remove_from_basket', item_id=item.id) }}" method="POST">
+                                    <button type="submit" class="button">Remove</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="total-price">
+                <h3>Total: £{{ "%.2f"|format(total_price) }}</h3>
+
+                <a href="{{ url_for('checkout') }}" class="button">Proceed to Checkout</a>
+
+
+                <!-- Clear Basket Button -->
+                <form action="{{ url_for('clear_basket') }}" method="POST" style="display:inline;">
+                    <button type="submit" class="button" style="background-color: #e74c3c;">Clear Basket</button>
+                </form>
+
+
+
+            </div>
+
+        {% else %}
+            <p>Your basket is currently empty.</p>
+        {% endif %}
+
+        <div style="margin-top: 20px;">
+            <a href="{{ url_for('galleryPage') }}" class="button">Back to Gallery</a>
+        </div>
+    </div>
+</body>
+</html>
