@@ -56,7 +56,7 @@
                             <td>{{ item.quantity }}</td>
                             <td>
                                 {% if item.price %}
-                                    £{{ item.price * item.quantity }}
+                                    £{{ "%.2f"|format(item.price * item.quantity) }}
                                 {% else %}
                                     Price not available
                                 {% endif %}
@@ -92,7 +92,7 @@
         {% endif %}
 
         <div style="margin-top: 20px;">
-            <a href="{{ url_for('galleryPage') }}" class="button">Back to Gallery</a>
+            <a href="{{ url_for('galleryPage') }}" class="button">Back</a>
         </div>
     </div>
 </body>
