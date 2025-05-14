@@ -27,8 +27,8 @@
         </ul>
 
         <!-- Search form (non-functional) -->
-        <form class="search-form">
-            <input type="text" placeholder="Search...">
+        <form class="search-form" method="GET" action="{{ url_for('galleryPage') }}">
+            <input type="text" name="query" placeholder="Search..." value="{{ request.args.get('query', '') }}">
             <button type="submit">Go</button>
         </form>
     </nav>
@@ -65,21 +65,25 @@
     </form>
 
     <!-- Items for sale -->
-    <div class="items-container">
-        {% for item in items_for_sale %}
-            <div class="item-card" data-id="{{ item.id }}">
-                <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.name }}">
-                <h2>{{ item.name }}</h2>
-                <p>Price: £{{ item.price }}</p>
+    {% if items_for_sale %}
+        <div class="items-container">
+            {% for item in items_for_sale %}
+                <div class="item-card" data-id="{{ item.id }}">
+                    <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.name }}">
+                    <h2>{{ item.name }}</h2>
+                    <p>Price: £{{ item.price }}</p>
 
-                <form action="{{ url_for('add_to_basket', item_id=item.id) }}" method="POST" class="add-to-basket-form">
-                    <button type="submit" class="button">Add to Basket</button>
-                </form>
+                    <form action="{{ url_for('add_to_basket', item_id=item.id) }}" method="POST" class="add-to-basket-form">
+                        <button type="submit" class="button">Add to Basket</button>
+                    </form>
 
-                <a href="{{ url_for('singleProductPage', item_id=item.id) }}" class="button">View Details</a>
-            </div>
-        {% endfor %}
-    </div>
+                    <a href="{{ url_for('singleProductPage', item_id=item.id) }}" class="button">View Details</a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+    <p style="text-align: center;">No items match your search.</p>
+    {% endif %}
 
     <!-- Hidden description box -->
     <div id="description-box" class="description-box" style="display: none;"></div>

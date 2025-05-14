@@ -63,8 +63,14 @@ class CheckoutForm(FlaskForm):
 
 @app.route('/')
 def galleryPage():
+    query = request.args.get('query', '').strip().lower()
     sort_by = request.args.get('sort', default='name')
+    
     items_for_sale = get_all_items()
+
+    # Filter if there's a query
+    if query:
+        items_for_sale = [item for item in items_for_sale if query in item['name'].lower()]
 
     if sort_by == 'price':
         items_for_sale.sort(key=lambda item: item['price'])
