@@ -22,7 +22,7 @@ def get_all_items():
     conn = sqlite3.connect('items_for_sale.db')
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
-    c.execute('SELECT * FROM items')
+    c.execute('SELECT DISTINCT* FROM items')
     items = c.fetchall()
     conn.close()
     return items
@@ -108,8 +108,7 @@ def submit_review(item_id):
 
     if not author or not content:
         flash("All fields are required!")
-        return redirect(url_for('singleProductPage', item_id=item_id))  # ✅ match item_id
-
+        return redirect(url_for('singleProductPage', item_id=item_id))  
     new_review = {'author': author, 'content': content}
     reviews_db.setdefault(item_id, []).append(new_review)
 
